@@ -1,0 +1,727 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroCalc: Pak Choy Smart-Growth Derivative Simulator</title>
+    <!-- Tailwind CSS for modern responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for beautiful interactive animations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome for agriculture and tech icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- MathJax for rendering gorgeous scientific derivative equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for modern feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+<header class="bg-gradient-to-r from-emerald-800 via-teal-700 to-cyan-800 text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+            <div class="bg-white/10 p-2.5 rounded-xl backdrop-blur-md border border-white/20">
+                <i class="fa-solid fa-seedling text-emerald-300 text-2xl animate-pulse"></i>
+            </div>
+            <div>
+                <h1 class="text-xl sm:text-2xl font-black tracking-tight flex items-center gap-2">
+                    AgroCalc <span class="text-emerald-300 text-sm font-semibold px-2 py-0.5 bg-emerald-950/50 rounded-full border border-emerald-500/30">v1.2</span>
+                </h1>
+                <p class="text-xs text-teal-100 font-medium">Faculty of Sustainable Agriculture (SFA) • Agrotech Division</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 text-xs sm:text-sm bg-black/20 px-3 py-1.5 rounded-lg border border-white/10">
+            <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-ping"></span>
+            <span class="font-semibold text-emerald-200">Interactive Bio-Calculus Model</span>
+        </div>
+    </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <section class="mb-8 bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div class="lg:col-span-8">
+                <div class="flex items-center gap-2 text-emerald-700 font-semibold text-xs uppercase tracking-wider mb-2">
+                    <i class="fa-solid fa-circle-info"></i> Malaysian Smart Farming Case Study
+                </div>
+                <h2 class="text-2xl font-bold text-slate-900 tracking-tight mb-3">
+                    Hydroponic Pak Choy (Sawi) Growth Optimization
+                </h2>
+                <p class="text-slate-600 leading-relaxed text-sm mb-4">
+                    In modern Malaysian agrotechnology (such as smart vertical farms in Cameron Highlands or automated greenhouse systems in Serdang), crop growth parameters are monitored using IoT sensors. Measuring biomass growth in terms of absolute fresh weight $f(x)$ allows agrotech managers to calculate the dynamic growth rate—mathematically defined as the first derivative $f'(x)$. By targeting nutritional delivery (Electrical Conductivity, EC) to match the peak instantaneous growth rate, farms can reduce fertilizer waste, cut carbon footprints, and maximize yield efficiency.
+                </p>
+                <div class="flex flex-wrap gap-3 text-xs">
+                    <span class="bg-teal-50 text-teal-700 font-medium px-3 py-1.5 rounded-full border border-teal-100 flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-invoice"></i> 
+                        Source: MARDI Agro-Technology Journal (2024)
+                    </span>
+                    <span class="bg-cyan-50 text-cyan-700 font-medium px-3 py-1.5 rounded-full border border-cyan-100 flex items-center gap-1.5">
+                        <i class="fa-solid fa-leaf"></i> 
+                        SOP: Department of Agriculture (DOA) Malaysia MyGAP Standards
+                    </span>
+                </div>
+            </div>
+            <div class="lg:col-span-4 bg-gradient-to-br from-emerald-50 to-teal-50 p-5 rounded-xl border border-emerald-100/60 self-stretch flex flex-col justify-center">
+                <h3 class="font-bold text-emerald-900 text-sm mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-nodes"></i> Smart Agrotech Parameters
+                </h3>
+                <ul class="text-xs text-slate-700 space-y-2">
+                    <li class="flex justify-between border-b border-emerald-200/50 pb-1.5">
+                        <span class="font-medium text-slate-600">Crop Cultivar:</span>
+                        <span class="font-bold text-emerald-800">Pak Choy F1 Hybrid</span>
+                    </li>
+                    <li class="flex justify-between border-b border-emerald-200/50 pb-1.5">
+                        <span class="font-medium text-slate-600">Growth Medium:</span>
+                        <span class="font-bold text-emerald-800">Recirculating Deep Water Culture (DWC)</span>
+                    </li>
+                    <li class="flex justify-between border-b border-emerald-200/50 pb-1.5">
+                        <span class="font-medium text-slate-600">Avg. Cycle:</span>
+                        <span class="font-bold text-emerald-800">40 Days (Nursery to Harvest)</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span class="font-medium text-slate-600">Target Weight:</span>
+                        <span class="font-bold text-emerald-800">250g per plant</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <!-- The S-Curve (Logistic Growth Function) -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition duration-300">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="p-2 bg-emerald-100 text-emerald-700 rounded-lg"><i class="fa-solid fa-chart-line"></i></span>
+                <div>
+                    <h3 class="font-bold text-slate-900">Cumulative Biomass Function</h3>
+                    <p class="text-xs text-slate-500">Logistic curve representing plant mass over time</p>
+                </div>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-xl text-center border border-slate-100 mb-4 font-mono overflow-x-auto text-sm">
+                $$f(x) = \frac{L}{1 + e^{-k(x - x_0)}}$$
+            </div>
+            <div class="text-xs text-slate-600 space-y-2">
+                <p><span class="font-bold text-emerald-700">\(f(x)\)</span>: Estimated dry/fresh weight (grams) at day \(x\).</p>
+                <p><span class="font-bold text-emerald-700">\(L\)</span>: Maximum carrying capacity / final target biomass (grams).</p>
+                <p><span class="font-bold text-emerald-700">\(k\)</span>: Growth steepness rate (affected by temperature/nutrient concentration).</p>
+                <p><span class="font-bold text-emerald-700">\(x_0\)</span>: Dynamic inflection point (day of absolute fastest growth rate).</p>
+            </div>
+        </div>
+
+        <!-- The First Derivative (Growth Rate Function) -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition duration-300">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="p-2 bg-teal-100 text-teal-700 rounded-lg"><i class="fa-solid fa-gauge-high"></i></span>
+                <div>
+                    <h3 class="font-bold text-slate-900">Instantaneous Growth Rate (Derivative)</h3>
+                    <p class="text-xs text-slate-500">Calculates growth rate change (g/day) at day \(x\)</p>
+                </div>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-xl text-center border border-slate-100 mb-4 font-mono overflow-x-auto text-sm">
+                $$f'(x) = \frac{L \cdot k \cdot e^{-k(x - x_0)}}{(1 + e^{-k(x - x_0)})^2}$$
+            </div>
+            <div class="text-xs text-slate-600 space-y-2">
+                <p><span class="font-bold text-teal-700">\(f'(x)\)</span>: Biomass growth rate in <span class="underline decoration-teal-400 font-semibold text-slate-700">grams per day</span>.</p>
+                <p><span class="font-bold text-teal-700">Peak Rate</span>: Always occurs at inflection day \(x_0\) where \(f''(x) = 0\).</p>
+                <p><span class="font-bold text-teal-700">Utility</span>: Helps agrotechnologists identify maximum nitrogen absorption windows for fertigation.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
+        
+        <!-- Left: Chart & Interactive Results (8 Columns) -->
+        <div class="lg:col-span-8 space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col h-full justify-between">
+                <div>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-area text-emerald-600"></i> Interactive Growth Curve & Derivative
+                            </h3>
+                            <p class="text-xs text-slate-500">Click on any point along the timeline to retrieve precise calculus coordinates & bioscience advice.</p>
+                        </div>
+                        <div class="flex gap-2 self-stretch sm:self-auto">
+                            <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg">
+                                <span class="w-2 h-2 rounded-full bg-emerald-600"></span> Biomass (g)
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 bg-teal-50 text-teal-700 border border-teal-200 rounded-lg">
+                                <span class="w-2 h-2 rounded-full bg-teal-600"></span> Growth Rate (g/day)
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Chart Container -->
+                    <div class="relative min-h-[320px] sm:min-h-[400px] bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Dynamic Click Result Display Card -->
+                <div id="interactiveDisplay" class="mt-6 bg-gradient-to-r from-slate-900 to-teal-950 text-white rounded-xl p-5 shadow-lg border border-slate-800 transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+                        <i class="fa-solid fa-calculator text-7xl"></i>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        <div class="md:col-span-4 border-b md:border-b-0 md:border-r border-slate-800 pb-4 md:pb-0 md:pr-4 flex flex-col justify-center">
+                            <div class="text-xs text-teal-400 font-semibold uppercase tracking-wider">Dynamic Selector</div>
+                            <div class="text-3xl font-black mt-1" id="selectedDayText">Day 20</div>
+                            <div class="text-xs text-slate-400 mt-1">Mid-Cycle Peak Growth</div>
+                        </div>
+
+                        <div class="md:col-span-8 space-y-3">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <div class="text-slate-400 text-xs">Biomass Weight, \(f(x)\):</div>
+                                    <div class="text-xl font-bold text-emerald-400" id="selectedBiomassText">125.00 grams</div>
+                                </div>
+                                <div>
+                                    <div class="text-slate-400 text-xs">Instantaneous Growth Rate, \(f'(x)\):</div>
+                                    <div class="text-xl font-bold text-teal-300" id="selectedRateText">12.50 g/day</div>
+                                </div>
+                            </div>
+                            <hr class="border-slate-800 my-2">
+                            <div>
+                                <div class="text-slate-400 text-xs font-semibold mb-1 flex items-center gap-1">
+                                    <i class="fa-solid fa-graduation-cap text-teal-400"></i> Layman Smart-Agri Explanation:
+                                </div>
+                                <p class="text-xs text-slate-200 leading-relaxed italic" id="selectedExplanation">
+                                    Click anywhere along the chart line or dynamic points above to run calculations.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Control Sliders & Scenario Physics (4 Columns) -->
+        <div class="lg:col-span-4 space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-teal-600"></i> Agro-Bio Parameters
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-6">Modify greenhouse factors below to mathematically manipulate crop growth curves.</p>
+
+                    <div class="space-y-6">
+                        <!-- Carrying Capacity (L) -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <label for="capacityRange" class="text-xs font-bold text-slate-700 flex items-center gap-1">
+                                    <i class="fa-solid fa-weight-scale text-emerald-600"></i> Max Biomass Capacity (L)
+                                </label>
+                                <span class="text-xs font-semibold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded" id="capacityVal">250g</span>
+                            </div>
+                            <input type="range" id="capacityRange" min="150" max="400" step="10" value="250" 
+                                class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600">
+                            <p class="text-[10px] text-slate-400 mt-1">Reflects target harvest weight standard. Influenced by spatial footprint and light levels.</p>
+                        </div>
+
+                        <!-- Growth Coefficient (k) -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <label for="growthRange" class="text-xs font-bold text-slate-700 flex items-center gap-1">
+                                    <i class="fa-solid fa-bolt text-teal-600"></i> Growth Coefficient (k)
+                                </label>
+                                <span class="text-xs font-semibold bg-teal-50 text-teal-700 px-2 py-0.5 rounded" id="growthVal">0.20</span>
+                            </div>
+                            <input type="range" id="growthRange" min="0.10" max="0.35" step="0.01" value="0.20" 
+                                class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-600">
+                            <p class="text-[10px] text-slate-400 mt-1">Growth acceleration metric. Higher values occur with optimized LED photoperiods and carbon-dioxide levels.</p>
+                        </div>
+
+                        <!-- Inflection Point (x0) -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <label for="inflectionRange" class="text-xs font-bold text-slate-700 flex items-center gap-1">
+                                    <i class="fa-solid fa-hourglass-half text-cyan-600"></i> Growth Inflection Day (x₀)
+                                </label>
+                                <span class="text-xs font-semibold bg-cyan-50 text-cyan-700 px-2 py-0.5 rounded" id="inflectionVal">Day 20</span>
+                            </div>
+                            <input type="range" id="inflectionRange" min="15" max="28" step="1" value="20" 
+                                class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-cyan-600">
+                            <p class="text-[10px] text-slate-400 mt-1">The day when the absolute growth rate is highest, transitioning from vegetative acceleration to maturation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-6 border-t border-slate-100 space-y-3">
+                    <button id="resetParamsBtn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> Reset to Cameron Highlands Baseline
+                    </button>
+                    <div class="p-3 bg-teal-50/50 border border-teal-100/50 rounded-xl text-[11px] text-slate-600 leading-relaxed">
+                        <span class="font-bold text-teal-900 block mb-1"><i class="fa-solid fa-microscope text-teal-700"></i> SFA Agrotech Research Tip:</span>
+                        A steeper growth rate coefficient (\(k\)) indicates a highly efficient smart greenhouse setup where environmental stress factors (humidity, pests, EC fluctuation) are minimized.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="mb-8">
+        <h3 class="text-xl font-bold text-slate-900 tracking-tight mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-flask-vial text-emerald-700"></i> Smart Agri-Fertigation Optimization Workflow
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Stage 1 -->
+            <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm relative overflow-hidden">
+                <div class="absolute -top-2 -right-2 bg-slate-100 text-slate-400 text-3xl font-extrabold px-3 py-1 rounded-bl-xl">1</div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                    <h4 class="font-bold text-slate-900 text-sm">Nursery & Rooting Phase</h4>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                    <strong>Interval:</strong> Days 0 to 10 <br>
+                    During this initial phase, the derivative value \(f'(x)\) is low (< 2 g/day). Photosynthesis is localized to early true leaves.
+                </p>
+                <div class="bg-amber-50 text-amber-800 text-xs font-semibold p-2.5 rounded-lg border border-amber-100 flex items-start gap-1.5">
+                    <i class="fa-solid fa-circle-exclamation text-amber-600 mt-0.5"></i>
+                    <span>Agrotech Intervention: Keep EC range lower (1.2–1.5 mS/cm). High nitrogen will burn tender root zones.</span>
+                </div>
+            </div>
+
+            <!-- Stage 2 -->
+            <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm relative overflow-hidden">
+                <div class="absolute -top-2 -right-2 bg-slate-100 text-slate-400 text-3xl font-extrabold px-3 py-1 rounded-bl-xl">2</div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                    <h4 class="font-bold text-slate-900 text-sm">Peak Vegetative Synthesis</h4>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                    <strong>Interval:</strong> Days 11 to 28 <br>
+                    The growth rate \(f'(x)\) accelerates dramatically, peaking precisely at inflection Day \(x_0\). Leaves are actively compounding biomass.
+                </p>
+                <div class="bg-emerald-50 text-emerald-800 text-xs font-semibold p-2.5 rounded-lg border border-emerald-100 flex items-start gap-1.5">
+                    <i class="fa-solid fa-bolt text-emerald-600 mt-0.5"></i>
+                    <span>Agrotech Intervention: Peak metabolism! Crank EC levels up to 2.0 mS/cm and keep automated aeration pumps operating continuously.</span>
+                </div>
+            </div>
+
+            <!-- Stage 3 -->
+            <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm relative overflow-hidden">
+                <div class="absolute -top-2 -right-2 bg-slate-100 text-slate-400 text-3xl font-extrabold px-3 py-1 rounded-bl-xl">3</div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span>
+                    <h4 class="font-bold text-slate-900 text-sm">Pre-Harvest Flushing Stage</h4>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                    <strong>Interval:</strong> Days 29 to 40 <br>
+                    The derivative \(f'(x)\) declines rapidly toward zero. Plant cell wall elongation is complete; biomass stabilizes at target carrying capacity \(L\).
+                </p>
+                <div class="bg-cyan-50 text-cyan-800 text-xs font-semibold p-2.5 rounded-lg border border-cyan-100 flex items-start gap-1.5">
+                    <i class="fa-solid fa-faucet-drip text-cyan-600 mt-0.5"></i>
+                    <span>Agrotech Intervention: Flush hydroponic reservoirs with pure reverse-osmosis water to drop nitrate levels below MyGAP safety boundaries.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8 bg-gradient-to-br from-emerald-950 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        <div class="absolute -bottom-10 -right-10 bg-emerald-800/20 w-80 h-80 rounded-full blur-3xl"></div>
+        
+        <div class="max-w-3xl">
+            <span class="text-xs font-bold text-emerald-300 uppercase tracking-widest mb-1 block">SFA Student Knowledge Check</span>
+            <h3 class="text-2xl font-black mb-4 tracking-tight">Agrotech Calculus Mastery Challenge</h3>
+            <p class="text-sm text-slate-300 leading-relaxed mb-6">
+                Test your conceptual understanding of derivatives in modern farming. What does the mathematical value of \(f'(x)\) truly reflect in terms of biological productivity?
+            </p>
+
+            <div class="space-y-3" id="quizContainer">
+                <!-- Option A -->
+                <button onclick="checkQuizAnswer('A')" class="quiz-option w-full text-left bg-white/5 hover:bg-white/10 active:bg-white/15 p-4 rounded-xl border border-white/10 transition flex items-center gap-4 text-xs sm:text-sm">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-800 flex items-center justify-center font-bold text-emerald-200">A</span>
+                    <span>The cumulative weight of all Pak Choy leaves in the smart hydroponic system at harvest day.</span>
+                </button>
+                <!-- Option B -->
+                <button onclick="checkQuizAnswer('B')" class="quiz-option w-full text-left bg-white/5 hover:bg-white/10 active:bg-white/15 p-4 rounded-xl border border-white/10 transition flex items-center gap-4 text-xs sm:text-sm">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-800 flex items-center justify-center font-bold text-emerald-200">B</span>
+                    <span>The speed and productivity at which raw nutrients are converted into plant structural fibers in a 24-hour cycle.</span>
+                </button>
+                <!-- Option C -->
+                <button onclick="checkQuizAnswer('C')" class="quiz-option w-full text-left bg-white/5 hover:bg-white/10 active:bg-white/15 p-4 rounded-xl border border-white/10 transition flex items-center gap-4 text-xs sm:text-sm">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-800 flex items-center justify-center font-bold text-emerald-200">C</span>
+                    <span>The maximum density of Pak Choy plants allowed per square meter inside a greenhouse setup.</span>
+                </button>
+            </div>
+
+            <!-- Quiz feedback area -->
+            <div id="quizFeedback" class="hidden mt-4 p-4 rounded-xl text-xs sm:text-sm font-semibold transition duration-300"></div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 text-xs mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+        <p class="font-medium text-slate-300">AgroCalc: SFA Agrotech Bioscience Derivative Simulation Engine</p>
+        <p class="max-w-xl mx-auto text-slate-500 leading-relaxed">
+            Formulated for crop growth visualization. Designed to aid undergraduate SFA students in bridging pure differential calculus theory with sustainable farming techniques in tropical Malaysia.
+        </p>
+        <div class="flex justify-center gap-6 text-slate-500 pt-2 border-t border-slate-800 max-w-xs mx-auto">
+            <span class="hover:text-emerald-400 transition cursor-pointer flex items-center gap-1">
+                <i class="fa-brands fa-github"></i> SFA Git Hub
+            </span>
+            <span>•</span>
+            <span class="hover:text-emerald-400 transition cursor-pointer flex items-center gap-1">
+                <i class="fa-solid fa-graduation-cap"></i> Academic Portal
+            </span>
+        </div>
+        <p class="text-[10px] text-slate-600 pt-4">&copy; 2026 Malaysia Precision Agrotech Education Initiatives.</p>
+    </div>
+</footer>
+
+<script>
+    // Global Constants and Baseline Settings
+    const baselineCapacity = 250; // L (g)
+    const baselineGrowthRate = 0.20; // k
+    const baselineInflection = 20; // x0
+
+    let activeChart = null;
+    let selectedDay = 20; // Default active analysis day
+
+    // Logistic Growth Formula: f(x) = L / (1 + e^(-k*(x - x0)))
+    function calculateBiomass(x, L, k, x0) {
+        return L / (1 + Math.exp(-k * (x - x0)));
+    }
+
+    // Derivative: f'(x) = (L * k * e^(-k*(x - x0))) / (1 + e^(-k*(x - x0)))^2
+    function calculateGrowthRate(x, L, k, x0) {
+        const exponent = Math.exp(-k * (x - x0));
+        const denominator = Math.pow(1 + exponent, 2);
+        return (L * k * exponent) / denominator;
+    }
+
+    // Dynamic Layman Explanation Generator based on growth rate speed & chronological day
+    function getLaymanExplanation(day, biomass, rate, L, k, x0) {
+        let text = "";
+        
+        if (day < 10) {
+            text = `<strong>Young Seedling Phase:</strong> At Day ${day}, cumulative fresh weight is only ${biomass.toFixed(1)}g. Growth rate is very minimal at ${rate.toFixed(2)} g/day as the Pak Choy is establishing its root network underneath the smart hydroponics block. Keep chemical concentrations low to prevent osmotic dehydration.`;
+        } else if (day >= 10 && day <= 15) {
+            text = `<strong>Early Vegetative Transition:</strong> At Day ${day}, cumulative fresh weight has ticked up to ${biomass.toFixed(1)}g. Rate of biomass accumulation is gaining momentum at ${rate.toFixed(2)} g/day. Increasing nitrogen proportions slightly stimulates robust vegetative shoot production.`;
+        } else if (Math.abs(day - x0) <= 2) {
+            text = `<strong>Peak Physiological Acceleration:</strong> At Day ${day}, the plant has reached its mathematical inflection point! Biomass is ${biomass.toFixed(1)}g and metabolism is maxing out at ${rate.toFixed(2)} g/day. This represents the ultimate sweet-spot where water and active mineral fertilization absorption rates are at their absolute peak!`;
+        } else if (day > 15 && day <= 27) {
+            text = `<strong>Rapid Vegetative Growth Phase:</strong> At Day ${day}, biomass growth is roaring ahead at ${rate.toFixed(2)} g/day. The plant's deep green canopy is absorbing maximum lumens. Keep light levels solid and EC strong to fuel continuous foliage development.`;
+        } else if (day > 27 && day < 35) {
+            text = `<strong>Maturation and Cell Tightening:</strong> At Day ${day}, fresh weight is a substantial ${biomass.toFixed(1)}g. The instantaneous growth rate has slowed down to ${rate.toFixed(2)} g/day. Cells are storing sugars and firming leaf structures rather than stretching further in size.`;
+        } else {
+            text = `<strong>Harvesting Readiness Window:</strong> At Day ${day}, cumulative weight has almost flattened out at ${biomass.toFixed(1)}g (nearing maximum potential carrying capacity of ${L}g). Instantaneous rate has dropped to only ${rate.toFixed(2)} g/day. Execute flushing protocols now to secure high quality crops conforming to MyGAP guidelines!`;
+        }
+        return text;
+    }
+
+    function generateSimulationData() {
+        const L = parseFloat(document.getElementById('capacityRange').value);
+        const k = parseFloat(document.getElementById('growthRange').value);
+        const x0 = parseInt(document.getElementById('inflectionRange').value);
+
+        const labels = [];
+        const biomassData = [];
+        const rateData = [];
+
+        // Generate day-by-day parameters (Day 0 to Day 40)
+        for (let day = 0; day <= 40; day++) {
+            labels.push(`Day ${day}`);
+            biomassData.push(calculateBiomass(day, L, k, x0));
+            rateData.push(calculateGrowthRate(day, L, k, x0));
+        }
+
+        return { labels, biomassData, rateData, L, k, x0 };
+    }
+
+    function updateChartAndStats() {
+        const { labels, biomassData, rateData, L, k, x0 } = generateSimulationData();
+
+        // Safety clamp on selectedDay to ensure it doesn't break when parameters move
+        if (selectedDay > 40) selectedDay = 40;
+
+        // Calculate statistics for dynamic card
+        const currentBiomass = calculateBiomass(selectedDay, L, k, x0);
+        const currentRate = calculateGrowthRate(selectedDay, L, k, x0);
+
+        // Update HTML interface numbers
+        document.getElementById('selectedDayText').innerText = `Day ${selectedDay}`;
+        document.getElementById('selectedBiomassText').innerText = `${currentBiomass.toFixed(2)} grams`;
+        document.getElementById('selectedRateText').innerText = `${currentRate.toFixed(2)} g/day`;
+        document.getElementById('selectedExplanation').innerHTML = getLaymanExplanation(selectedDay, currentBiomass, currentRate, L, k, x0);
+
+        // Create scatter points for the active target visual feedback line
+        const selectedPointsBiomass = Array(41).fill(null);
+        const selectedPointsRate = Array(41).fill(null);
+        selectedPointsBiomass[selectedDay] = currentBiomass;
+        selectedPointsRate[selectedDay] = currentRate;
+
+        if (activeChart) {
+            // Smoothly update the datasets rather than totally destroying canvas for high performance
+            activeChart.data.labels = labels;
+            activeChart.data.datasets[0].data = biomassData;
+            activeChart.data.datasets[1].data = rateData;
+            activeChart.data.datasets[2].data = selectedPointsBiomass;
+            activeChart.data.datasets[3].data = selectedPointsRate;
+            activeChart.update();
+        } else {
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            activeChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Cumulative Biomass f(x) (g)',
+                            data: biomassData,
+                            borderColor: '#059669', // Emerald-600
+                            backgroundColor: 'rgba(5, 150, 105, 0.08)',
+                            fill: true,
+                            tension: 0.3,
+                            yAxisID: 'y1',
+                            borderWidth: 3,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                        },
+                        {
+                            label: "Instantaneous Growth Rate f'(x) (g/day)",
+                            data: rateData,
+                            borderColor: '#0d9488', // Teal-600
+                            borderDash: [5, 5],
+                            backgroundColor: 'transparent',
+                            tension: 0.3,
+                            yAxisID: 'y2',
+                            borderWidth: 2.5,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                        },
+                        {
+                            label: 'Active Plant Biomass Point',
+                            data: selectedPointsBiomass,
+                            borderColor: '#10b981',
+                            backgroundColor: '#ffffff',
+                            pointRadius: 7,
+                            pointHoverRadius: 9,
+                            borderWidth: 3,
+                            yAxisID: 'y1',
+                            showLine: false
+                        },
+                        {
+                            label: 'Active Rate Derivative Point',
+                            data: selectedPointsRate,
+                            borderColor: '#14b8a6',
+                            backgroundColor: '#ffffff',
+                            pointRadius: 7,
+                            pointHoverRadius: 9,
+                            borderWidth: 3,
+                            yAxisID: 'y2',
+                            showLine: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    onClick: (event, elements) => {
+                        // Locate the click index to recalculate stats
+                        const activePoints = activeChart.getElementsAtEventForMode(event, 'nearest', { intersect: false }, true);
+                        if (activePoints.length > 0) {
+                            selectedDay = activePoints[0].index;
+                            updateChartAndStats();
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // We use our bespoke styled headers for the legend
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleColor: '#2dd4bf',
+                            bodyColor: '#f8fafc',
+                            borderColor: '#334155',
+                            borderWidth: 1,
+                            padding: 12,
+                            cornerRadius: 10,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y.toFixed(2);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(241, 245, 249, 1)'
+                            },
+                            ticks: {
+                                color: '#64748b',
+                                font: {
+                                    family: 'Inter',
+                                    size: 11
+                                }
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Cumulative Biomass f(x) (grams)',
+                                color: '#059669',
+                                font: {
+                                    weight: 'bold',
+                                    family: 'Inter'
+                                }
+                            },
+                            ticks: {
+                                color: '#059669'
+                            },
+                            grid: {
+                                color: 'rgba(241, 245, 249, 1)'
+                            }
+                        },
+                        y2: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: "Instantaneous Growth Rate f'(x) (g/day)",
+                                color: '#0d9488',
+                                font: {
+                                    weight: 'bold',
+                                    family: 'Inter'
+                                }
+                            },
+                            ticks: {
+                                color: '#0d9488'
+                            },
+                            grid: {
+                                drawOnChartArea: false // Prevents cluttered double gridlines
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    function setupEventListeners() {
+        const capacitySlider = document.getElementById('capacityRange');
+        const growthSlider = document.getElementById('growthRange');
+        const inflectionSlider = document.getElementById('inflectionRange');
+        const resetBtn = document.getElementById('resetParamsBtn');
+
+        // Update values on drag
+        capacitySlider.addEventListener('input', (e) => {
+            document.getElementById('capacityVal').innerText = `${e.target.value}g`;
+            updateChartAndStats();
+        });
+
+        growthSlider.addEventListener('input', (e) => {
+            document.getElementById('growthVal').innerText = parseFloat(e.target.value).toFixed(2);
+            updateChartAndStats();
+        });
+
+        inflectionSlider.addEventListener('input', (e) => {
+            document.getElementById('inflectionVal').innerText = `Day ${e.target.value}`;
+            updateChartAndStats();
+        });
+
+        // Reset to scientific baseline model
+        resetBtn.addEventListener('click', () => {
+            capacitySlider.value = baselineCapacity;
+            document.getElementById('capacityVal').innerText = `${baselineCapacity}g`;
+
+            growthSlider.value = baselineGrowthRate;
+            document.getElementById('growthVal').innerText = baselineGrowthRate.toFixed(2);
+
+            inflectionSlider.value = baselineInflection;
+            document.getElementById('inflectionVal').innerText = `Day ${baselineInflection}`;
+
+            selectedDay = 20; // reset active card highlight
+            updateChartAndStats();
+        });
+    }
+
+    function checkQuizAnswer(selectedOption) {
+        const quizFeedback = document.getElementById('quizFeedback');
+        const options = document.querySelectorAll('.quiz-option');
+
+        // Reset styling for options
+        options.forEach(opt => {
+            opt.classList.remove('border-emerald-500', 'bg-emerald-900/30', 'border-red-500', 'bg-red-950/30');
+        });
+
+        quizFeedback.classList.remove('hidden', 'bg-emerald-800/25', 'text-emerald-300', 'bg-rose-950/40', 'text-rose-300');
+
+        if (selectedOption === 'B') {
+            quizFeedback.classList.add('bg-emerald-800/30', 'text-emerald-200');
+            quizFeedback.innerHTML = `
+                <div class="flex gap-2 items-start">
+                    <i class="fa-solid fa-circle-check text-lg text-emerald-400 mt-0.5"></i>
+                    <div>
+                        <span class="font-bold block text-sm">Correct Answer!</span>
+                        <p class="text-xs text-slate-300 font-normal mt-1">Excellent! The derivative \(f'(x)\) represents the instantaneous rate of change of biomass (growth speed) on any given day. Targeting fertilizer input to peak precisely when \(f'(x)\) is maximized minimizes fertilizer runoff and optimizes resource absorption.</p>
+                    </div>
+                </div>
+            `;
+            // Highlight selected button
+            event.currentTarget.classList.add('border-emerald-500', 'bg-emerald-900/30');
+        } else {
+            quizFeedback.classList.add('bg-rose-950/40', 'text-rose-300');
+            quizFeedback.innerHTML = `
+                <div class="flex gap-2 items-start">
+                    <i class="fa-solid fa-circle-xmark text-lg text-rose-400 mt-0.5"></i>
+                    <div>
+                        <span class="font-bold block text-sm">Incorrect Answer.</span>
+                        <p class="text-xs text-slate-300 font-normal mt-1">Option ${selectedOption} does not model the derivative. Remember, cumulative weight represents \(f(x)\) itself, while plant density is a constant geometric constraint. The derivative represents rate of conversion or growth speed.</p>
+                    </div>
+                </div>
+            `;
+            // Highlight chosen button as error
+            event.currentTarget.classList.add('border-red-500', 'bg-red-950/30');
+        }
+    }
+
+    // Trigger initialization procedures on system load
+    window.onload = function() {
+        updateChartAndStats();
+        setupEventListeners();
+    };
+</script>
+</body>
+</html>
